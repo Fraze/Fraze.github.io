@@ -170,7 +170,8 @@ besogo.create = function(container, options) {
             boardDiv.style.width = width + 'px';
             if (panelsDiv) {
                 if (height) { // Only set height if param present
-                    panelsDiv.style.height = (height - width) + 'px';
+                    // panelsDiv.style.height = (height - width) + 'px';
+                    panelsDiv.style.height = 'fit-content';
                 }
                 panelsDiv.style.width = width + 'px';
             }
