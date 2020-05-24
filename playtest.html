@@ -11,25 +11,6 @@
 		<script>
 "use strict";
 
-function ajaxPost(url, data, callback) {
-    var dataForm = new FormData();
-    for (var key in data) {
-    	dataForm.append(key, data[key]);
-    }
-    var r = new XMLHttpRequest();
-    r.open('POST', url, true);
-    r.onreadystatechange = function() {
-        if (r.readyState == XMLHttpRequest.DONE ) {
-           if (r.status == 200){
-           	callback(JSON.parse(r.responseText));
-           } else {
-              alert('There was an error ' + r.status)
-           }
-        }
-    }
-    r.send(data);
-}
-
 function getsize(object) {
     var count = 0;
     for (var i in object) {
@@ -416,49 +397,6 @@ function Game(size) {
 		unlock: function() {
 			locked = false;
 		}
-	}
-}
-
-function CosumiBot(Game) {
-	var nToA = "abcdefghijklmnopqrstuvwxyz"
-
-	var id = "";
-
-	ajaxPost("http://www.cosumi.net/play/id.cgi", {
-		m: game.size,
-		cm: 0,
-		c: "b",
-		f: "j",
-		dummy: (new Date).getTime(),
-	}, function (r) {
-		console.log(r);
-		if (r.error) {
-			alert("Failed to contact bot: " + r.error);
-		} else {
-			id = r.i;
-		}
-	});
-
-	function playAt(row, col) {
-		game.playAt(row, col);
-		game.lock();
-		ajaxPost("http://www.cosumi.net/play/move.cgi", {
-			m: nToA.charAt(col) + nToA.charAt(row),
-			r: "7",
-			cm: 0,
-			i: id,
-			dummy: (new Date).getTime(),
-		}, function(r) {
-			console.log(r);
-			var col = nToA.indexOf(r.m.charAt(0));
-			var row = nToA.indexOf(r.m.charAt(1));
-			game.unlock();
-			game.playAt(row, col);
-		});
-	}
-
-	return {
-		playAt: playAt,
 	}
 }
 
